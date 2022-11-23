@@ -9,40 +9,42 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/v1/categories")
 public class CategoriesController {
     @Autowired
-    CategoryRepository repository;
+    private CategoryRepository categoryRepository;
 
-    @GetMapping("/categories")
+    @GetMapping
     public List<Category> read() {
-        return repository.findAll();
+        return categoryRepository.findAll();
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/{id}")
     public Category readById(@PathVariable Long id) {
         Category category = null;
-        Optional<Category> categoryOptional = repository.findById(id);
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
         if(categoryOptional.isPresent()) {
             category = categoryOptional.get();
         }
         return category;
     }
 
-    @PostMapping("/categories")
+    @PostMapping
     public Category create(@RequestBody Category category) {
-        return repository.save(category);
+        return categoryRepository.save(category);
     }
 
-    @PutMapping("/categories/{id}")
+    @PutMapping("/{id}")
     public Category update(@PathVariable Long id, @RequestBody Category category) {
-        Category categoryUpdate = repository.findById(id).get();
+        Category categoryUpdate = categoryRepository.findById(id).get();
         categoryUpdate.setTitle(category.getTitle());
-        return repository.save(categoryUpdate);
+        return categoryRepository.save(categoryUpdate);
     }
 
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/{id}")
     public boolean delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        categoryRepository.deleteById(id);
         return true;
     }
 

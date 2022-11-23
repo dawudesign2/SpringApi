@@ -3,6 +3,7 @@ package com.dawudesign.springapi.config;
 import com.sun.istack.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,9 +26,8 @@ public class AuthConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/categories").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().hasRole("ADMIN")
                 .and().formLogin()
                 .and().httpBasic();
 
